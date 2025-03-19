@@ -1,0 +1,7 @@
+# This is Git's per-user configuration file.
+[user]
+	email = 97694636+sloraris@users.noreply.github.com
+	name = sloraris
+
+[push]
+	autoSetupRemote = true

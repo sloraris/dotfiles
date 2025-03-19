@@ -1,0 +1,93 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json
+
+secondary_prompt:
+  template: "❯❯ "
+  foreground: "#6f0fc2"
+  background: transparent
+transient_prompt:
+  template: "❯ "
+  background: transparent
+  foreground_templates:
+  - "{{ if gt .Code 0 }}red{{ end }}"
+  - "{{ if eq .Code 0 }}#6f0fc2{{ end }}"
+blocks:
+- type: prompt
+  alignment: left
+  segments:
+  - properties:
+      cache_duration: none
+    leading_diamond: 
+    trailing_diamond: 
+    template: " {{ if .WSL }}WSL at {{ end }}{{.Icon}} "
+    foreground: "#ffffff"
+    background: "#6f0fc2"
+    type: os
+    style: diamond
+  - properties:
+      cache_duration: none
+      mapped_locations:
+        "~": "\uf015 "
+        ~/Documents/code: "❯_ "
+        ~/Library/Mobile Documents/com~apple~CloudDocs: "\uf0c2 "
+      style: agnoster_short
+    template: " {{ .Path }} "
+    foreground: "#ffffff"
+    powerline_symbol: 
+    background: "#fc8236"
+    type: path
+    style: powerline
+  - properties:
+      cache_duration: none
+      fetch_status: true
+      fetch_upstream_icon: true
+      mapped_branches:
+        add/*: "+ "
+        adjust/*: ">< "
+        bug/*: "🐛 "
+        feat/*: "🚀 "
+        remove/*: "- "
+      newline: true
+      source: cli
+      untracked_modes:
+        /Users/user/Projects/oh-my-posh/: "no"
+    template: "{{ .UpstreamIcon }}{{ .HEAD }}{{if .BranchStatus }} {{ .BranchStatus }}{{ end }}{{ if .Working.Changed }} \uf044 {{ .Working.String }}{{ end }}{{ if and (.Working.Changed) (.Staging.Changed) }} |{{ end }}{{ if .Staging.Changed }} \uf046 {{ .Staging.String }}{{ end }}{{ if gt .StashCount 0 }} \uf0c7 {{ .StashCount }}{{ end }}"
+    foreground: "#193549"
+    powerline_symbol: 
+    background: "#34D399"
+    type: git
+    style: powerline
+    background_templates:
+    - "{{ if or (.Working.Changed) (.Staging.Changed) }}#FFEB3B{{ end }}"
+    - "{{ if and (gt .Ahead 0) (gt .Behind 0) }}#FFCC80{{ end }}"
+    - "{{ if gt .Ahead 0 }}#B388FF{{ end }}"
+    - "{{ if gt .Behind 0 }}#B388FB{{ end }}"
+  newline: true
+- type: prompt
+  alignment: right
+  filler: "<#2A2A2C,transparent>.</>"
+  segments:
+  - properties:
+      always_enabled: true
+      cache_duration: none
+    leading_diamond: 
+    trailing_diamond: 
+    template: " {{ .FormattedMs }} "
+    foreground: "#ffeb3b"
+    background: "#6f0fc2"
+    type: executiontime
+    style: diamond
+- type: prompt
+  alignment: left
+  segments:
+  - properties:
+      cache_duration: none
+    template: "❯ "
+    background: transparent
+    type: text
+    style: plain
+    foreground_templates:
+    - "{{ if gt .Code 0 }}red{{ end }}"
+    - "{{ if eq .Code 0 }}#6f0fc2{{ end }}"
+  newline: true
+version: 3
+final_space: true
