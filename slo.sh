@@ -88,9 +88,10 @@ if [ -f "$TEMP_DIR/.zshrc" ]; then
     echo "Installed .zshrc"
 fi
 
-# Download and extract .config directory
-mkdir -p ~/.config
-curl -fsSL "$DOTFILES_REPO/.config/oh-my-posh/themes/custom.omp.json" -o ~/.config/oh-my-posh/themes/custom.omp.json --create-dirs || echo "Warning: Failed to download oh-my-posh theme"
+# Download oh-my-posh theme
+echo "Downloading oh-my-posh theme..."
+mkdir -p ~/.config/ohmyposh
+curl -fsSL "$DOTFILES_REPO/.config/ohmyposh/slo.yml" -o ~/.config/ohmyposh/slo.yml || echo "Warning: Failed to download oh-my-posh theme"
 
 # Cleanup temporary directory
 rm -rf "$TEMP_DIR"
