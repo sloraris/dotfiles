@@ -1,6 +1,8 @@
 #!/bin/bash
 ##### Setup sloraris mac environment #####
 
+# Exit on any error
+set -e
 
 # List of applications to install
 BREW_APPS=(
@@ -27,10 +29,12 @@ if ! command -v brew &>/dev/null; then
     echo "Homebrew not found. Installing..."
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
-    # Activate Homebrew for the current session
+    # Add Homebrew to PATH permanently
     if [[ "$(uname -m)" == "arm64" ]]; then
+        echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.zprofile
         eval "$(/opt/homebrew/bin/brew shellenv)"
     else
+        echo 'eval "$(/usr/local/bin/brew shellenv)"' >> ~/.zprofile
         eval "$(/usr/local/bin/brew shellenv)"
     fi
 else
@@ -42,22 +46,53 @@ brew update
 
 # Install CLI applications
 echo "Installing CLI applications..."
-brew install "${BREW_APPS[@]}"
+for app in "${BREW_APPS[@]}"; do
+    if brew install "$app"; then
+        echo "Successfully installed $app"
+    else
+        echo "Failed to install $app"
+    fi
+done
 
 # Install GUI applications
 echo "Installing GUI applications..."
-brew install --cask "${CASK_APPS[@]}"
+for app in "${CASK_APPS[@]}"; do
+    if brew install --cask "$app"; then
+        echo "Successfully installed $app"
+    else
+        echo "Failed to install $app"
+    fi
+done
 
 # Cleanup
 brew cleanup
 echo "Installation complete!"
 
-# Setup git and ohmyposh
-cp ./.gitconfig ~/.gitconfig
-cp -r ./.config ~/.
+# Create temporary directory for dotfiles
+TEMP_DIR=$(mktemp -d)
+DOTFILES_REPO="https://raw.githubusercontent.com/sloraris/dotfiles/main"
 
-# Copy/replace .zshrc and restart shell environment
-cp ./.zshrc ~/.zshrc
-source ~/.zshrc
+# Download dotfiles
+echo "Downloading dotfiles..."
+curl -fsSL "$DOTFILES_REPO/.gitconfig" -o "$TEMP_DIR/.gitconfig" || echo "Warning: Failed to download .gitconfig"
+curl -fsSL "$DOTFILES_REPO/.zshrc" -o "$TEMP_DIR/.zshrc" || echo "Warning: Failed to download .zshrc"
 
-echo "Setup completed."
+# Copy downloaded files to home directory
+if [ -f "$TEMP_DIR/.gitconfig" ]; then
+    cp "$TEMP_DIR/.gitconfig" ~/.gitconfig
+    echo "Installed .gitconfig"
+fi
+
+if [ -f "$TEMP_DIR/.zshrc" ]; then
+    cp "$TEMP_DIR/.zshrc" ~/.zshrc
+    echo "Installed .zshrc"
+fi
+
+# Download and extract .config directory
+mkdir -p ~/.config
+curl -fsSL "$DOTFILES_REPO/.config/oh-my-posh/themes/custom.omp.json" -o ~/.config/oh-my-posh/themes/custom.omp.json --create-dirs || echo "Warning: Failed to download oh-my-posh theme"
+
+# Cleanup temporary directory
+rm -rf "$TEMP_DIR"
+
+echo "Setup completed. Please restart your terminal or run 'source ~/.zshrc' manually."
