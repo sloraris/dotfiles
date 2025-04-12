@@ -10,6 +10,11 @@ To set up a new MacOS environment, run this single command in your terminal:
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/sloraris/dotfiles/main/slo.sh)"
 ```
 
+## Requirements
+
+- MacOS
+- Internet connection
+- Administrator privileges (for Homebrew installation)
 
 ## What Does It Install?
 
@@ -45,12 +50,23 @@ The script will:
 After the script completes:
 1. Restart your terminal
 2. OR run `source ~/.zshrc` to apply the new configuration
+3. Setup individual applications
 
-## Requirements
+## Application configuration
 
-- MacOS
-- Internet connection
-- Administrator privileges (for Homebrew installation)
+- Warp:
+  - Set prompt to `oh-my-posh`
+  - Set input position
+  - Set font to `Meslo LGS Nerd Font Mono`
+  - Set `Use thin strokes` to `Never`
+  - Set theme
+
+- Sanesidebuttons:
+  - Allow permissions
+  - Hide status bar icon
+
+- Notunes:
+  - Hide status bar icon
 
 ## Troubleshooting
 
