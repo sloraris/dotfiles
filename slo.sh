@@ -74,8 +74,8 @@ DOTFILES_REPO="https://raw.githubusercontent.com/sloraris/dotfiles/main"
 
 # Download dotfiles
 echo "Downloading dotfiles..."
-curl -fsSL "$DOTFILES_REPO/.gitconfig" -o "$TEMP_DIR/.gitconfig" || echo "Warning: Failed to download .gitconfig"
-curl -fsSL "$DOTFILES_REPO/.zshrc" -o "$TEMP_DIR/.zshrc" || echo "Warning: Failed to download .zshrc"
+curl -fsSL "$DOTFILES_REPO/.config/.gitconfig" -o "$TEMP_DIR/.gitconfig" || echo "Warning: Failed to download .gitconfig"
+curl -fsSL "$DOTFILES_REPO/.config/zshrc" -o "$TEMP_DIR/.zshrc" || echo "Warning: Failed to download .zshrc"
 
 # Copy downloaded files to home directory
 if [ -f "$TEMP_DIR/.gitconfig" ]; then
