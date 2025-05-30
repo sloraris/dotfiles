@@ -8,6 +8,14 @@ export EDITOR=nano
 export VISUAL="$EDITOR"
 alias home="cd ~"
 
+# git
+alias g=git
+alias ga='git add'
+alias gc='git commit'
+alias gp='git pull'
+alias gt='git tag'
+alias gs='git status'
+
 # terraform
 alias tf=terraform
 
